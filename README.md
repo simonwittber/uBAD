@@ -2,44 +2,44 @@
 Behaviour and Decision Library for Unity
 
 # Example syntax
-Root {
-    Once {
-        BB set time 0.5 
-    }
-    MutatingSelector {
-        WhileBoth BADTester.CheckSomeCondition {
-            Sequence {
-                UntilSuccess {
-                    ! BadTester.DoSomeLongTask
-                }
-                Chance 0.5 {
-                    Log "Booya."
-                }
-            }
+    Root {
+        Once {
+            BB set time 0.5 
         }
-
-        Sequence {
-            Sleep time, 0.5
-            ? BADTester.CheckSomeCondition
-            ! BADTester.DoSomeLongTask
-            RandomSelector {
-                Sleep time, 0
-                ? BADTester.CheckSomeCondition
-                Cooldown 3 {
-                    Invert { 
-                        UntilFailure {
-                            ! BADTester.DoSomeLongTask
-                        }
+        MutatingSelector {
+            WhileBoth BADTester.CheckSomeCondition {
+                Sequence {
+                    UntilSuccess {
+                        ! BadTester.DoSomeLongTask
+                    }
+                    Chance 0.5 {
+                        Log "Booya."
                     }
                 }
             }
-            WaitFor BADTester.CheckSomeCondition {
-                Loop 3 {
-                    ! BADTester.DoSomeLongTask
+
+            Sequence {
+                Sleep time, 0.5
+                ? BADTester.CheckSomeCondition
+                ! BADTester.DoSomeLongTask
+                RandomSelector {
+                    Sleep time, 0
+                    ? BADTester.CheckSomeCondition
+                    Cooldown 3 {
+                        Invert { 
+                            UntilFailure {
+                                ! BADTester.DoSomeLongTask
+                            }
+                        }
+                    }
+                }
+                WaitFor BADTester.CheckSomeCondition {
+                    Loop 3 {
+                        ! BADTester.DoSomeLongTask
+                    }
                 }
             }
         }
     }
-}
 
 
