@@ -7,7 +7,7 @@ namespace BAD
     /// <summary>
     /// Runs child every second time.
     /// </summary>
-    public class FlipFlip : Decorator
+    public class FlipFlop : Decorator
     {
 
 		public bool run = true;
