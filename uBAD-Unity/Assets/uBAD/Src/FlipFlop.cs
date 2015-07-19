@@ -27,7 +27,7 @@ namespace BAD
 
         public override string ToString ()
         {
-            return string.Format ("FlipFlip");
+            return string.Format ("FlipFlop");
         }
     }
 

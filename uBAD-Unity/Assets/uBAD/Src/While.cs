@@ -8,7 +8,7 @@ namespace BAD
     /// <summary>
     /// Executes its child while condition is true and the child has not failed.     
     /// </summary>
-    public class WhileBoth : Decorator
+    public class While : Decorator
     {
 
         ComponentMethodLookup method;

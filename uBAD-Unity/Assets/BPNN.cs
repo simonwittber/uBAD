@@ -6,7 +6,7 @@ using System.Linq;
 public class BPNN : MonoBehaviour
 {
 	public int inputCount = 2, hiddenCount = 3, outputCount = 1;
-
+	
 	void Awake ()
 	{
 		ConstructNN (inputCount, hiddenCount, outputCount);
@@ -20,9 +20,7 @@ public class BPNN : MonoBehaviour
 	{
 		var m = new double[I, J];
 		for (var i=0; i<I; i++) {
-			for (var j=0; j<J; j++) {
-				m [i, j] = fill;
-			}
+			for (var j=0; j<J; j++) m [i, j] = fill;
 		}
 		return m;
 	}
@@ -37,26 +35,19 @@ public class BPNN : MonoBehaviour
 		ai = new double[ni];
 		ah = new double[nh];
 		ao = new double[no];
-		for (var i=0; i<ni; i++)
-			ai [i] = 1.0;
-		for (var i=0; i<nh; i++)
-			ah [i] = 1.0;
-		for (var i=0; i<no; i++)
-			ao [i] = 1.0;
+		for (var i=0; i<ni; i++) ai [i] = 1.0;
+		for (var i=0; i<nh; i++) ah [i] = 1.0;
+		for (var i=0; i<no; i++) ao [i] = 1.0;
 
 		wi = NewMatrix (ni, nh);
 		wo = NewMatrix (nh, no);
         
 		for (var i=0; i<ni; i++) {
-			for (var j=0; j<nh; j++) {
-				wi [i, j] = Random.Range (-0.2f, 0.2f);
-			}
+			for (var j=0; j<nh; j++) wi [i, j] = Random.Range (-0.2f, 0.2f);
 		}
 
 		for (var j=0; j<nh; j++) {
-			for (var k=0; k<no; k++) {
-				wo [j, k] = Random.Range (-2.0f, 2.0f);
-			}
+			for (var k=0; k<no; k++) wo [j, k] = Random.Range (-2.0f, 2.0f);
 		}
  
 		ci = NewMatrix (ni, nh);
@@ -65,24 +56,19 @@ public class BPNN : MonoBehaviour
  
 	double[] Calculate (double[] inputs)
 	{
-		if (inputs.Length != ni - 1)
-			throw new System.Exception ("Wrong number of inputs.");
+		if (inputs.Length != ni - 1) throw new System.Exception ("Wrong number of inputs.");
  
-		for (var i=0; i<ni-1; i++)
-			ai [i] = inputs [i];
+		for (var i=0; i<ni-1; i++) ai [i] = inputs [i];
  
 		for (var j=0; j<nh; j++) {
 			var sum = 0.0;
-			for (var i=0; i<ni; i++)  {
-				sum += ai[i] * wi [i, j];
-			}
+			for (var i=0; i<ni; i++) sum += ai[i] * wi [i, j];
 			ah [j] = Sigmoid (sum);
 		}
 
 		for (var k=0; k<no; k++) {
 			var sum = 0.0;
-			for (var j=0; j<nh; j++)
-				sum += ah [j] * wo [j, k];
+			for (var j=0; j<nh; j++) sum += ah [j] * wo [j, k];
 			ao [k] = Sigmoid (sum);
 		}
 		return ao;
@@ -91,16 +77,13 @@ public class BPNN : MonoBehaviour
 	double[] NewArray (int length, double fill)
 	{
 		var a = new double[length];
-		for (var i=0; i<length; i++) {
-			a [i] = fill;
-		}
+		for (var i=0; i<length; i++) a [i] = fill;
 		return a;
 	}
  
 	double BackPropagate (double[] targets, double N, double M)
 	{
-		if (targets.Length != no)
-			throw new System.Exception ("Wrong number of target values.");
+		if (targets.Length != no) throw new System.Exception ("Wrong number of target values.");
  
 		var output_deltas = NewArray (no, 0.0);
         
@@ -111,8 +94,7 @@ public class BPNN : MonoBehaviour
 		var hidden_deltas = NewArray (nh, 0.0);
 		for (var j=0; j<nh; j++) {
 			var error = 0.0;
-			for (var k=0; k<no; k++)
-				error += output_deltas [k] * wo [j, k];
+			for (var k=0; k<no; k++) error += output_deltas [k] * wo [j, k];
 			hidden_deltas [j] = DSigmoid (ah [j]) * error;
 		}
  
@@ -131,8 +113,7 @@ public class BPNN : MonoBehaviour
 			}
 		}
 		var e = 0.0;
-		for (var k=0; k<targets.Length; k++) 
-			e += 0.5 * System.Math.Pow ((targets [k] - this.ao [k]), 2);
+		for (var k=0; k<targets.Length; k++) e += 0.5 * System.Math.Pow ((targets [k] - this.ao [k]), 2);
 		return e;
 	}
 
@@ -181,8 +162,7 @@ public class BPNN : MonoBehaviour
 			return repr;
 		}
 	}
-
-
+	
 	void Start ()
 	{
 		var patterns = new TrainingPair[] {
@@ -194,6 +174,4 @@ public class BPNN : MonoBehaviour
 		Train (patterns, 10000);
 		Test (patterns);
 	}
- 
-
 }

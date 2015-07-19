@@ -7,8 +7,16 @@ namespace BAD
 	public class Blackboard
 	{
 
-		
+		Dictionary<Symbol, Label> labels = new System.Collections.Generic.Dictionary<Symbol, Label>();
 		Dictionary<string, float> blackboard = new Dictionary<string, float> ();
+
+		public Node GetLabel(Symbol name) {
+			return labels[name].children[0];
+		}
+
+		public void CreateLabel(Label label) {
+			labels[label.name] = label;
+		}
 
 		public Dictionary<string,float> Items {
 			get {

@@ -44,6 +44,7 @@ namespace BAD
 				if (atom is Node) {
 					DebugLog ("Node: " + atom + (atom is Branch ? "(Branch)" : "(Leaf)"));
 					instance = atom as Node;
+					instance.reactor = go.GetComponent<BADReactor>();
 					if (branch != null) {
 						DebugLog ("Adding to branch: " + branch);
 						branch.Add (instance);
