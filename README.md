@@ -3,11 +3,19 @@ Behaviour and Decision Library for Unity
 
 # Example syntax
     Root {
+	
+        Jump JustLikeAFunction
         Once {
             BB set time 0.5 
         }
+        SubTree JustLikeAFunction {
+            Sequence {
+                Log "1"
+                Log "2"
+            }
+        }
         MutatingSelector {
-            WhileBoth BADTester.CheckSomeCondition {
+            While BADTester.CheckSomeCondition {
                 Sequence {
                     UntilSuccess {
                         ! BadTester.DoSomeLongTask
@@ -15,31 +23,43 @@ Behaviour and Decision Library for Unity
                     Chance 0.5 {
                         Log "Booya."
                     }
-                }
-            }
-
-            Sequence {
-                Sleep time, 0.5
-                ? BADTester.CheckSomeCondition
-                ! BADTester.DoSomeLongTask
-                RandomSelector {
-                    Sleep time, 0
-                    ? BADTester.CheckSomeCondition
-                    Cooldown 3 {
-                        Invert { 
-                            UntilFailure {
-                                ! BADTester.DoSomeLongTask
-                            }
+                    Chance 0.5 {
+                        Sequence {
+                            BreakPoint
+                            Jump JUMPTOME
                         }
                     }
                 }
-                WaitFor BADTester.CheckSomeCondition {
-                    Loop 3 {
-                        ! BADTester.DoSomeLongTask
+            
+            }
+
+            Label JUMPTOME {
+                Sequence {
+                    Sleep time, 0.5
+                    ? BADTester.CheckSomeCondition
+                    ! BADTester.DoSomeLongTask
+                    RandomSelector {
+                        Sleep time, 0
+                        ? BADTester.CheckSomeCondition
+                        Cooldown 3 {
+                            Invert { 
+                                UntilFailure {
+                                    ! BADTester.DoSomeLongTask
+                                }
+                            }
+                        }
+                    }
+                    WaitFor BADTester.CheckSomeCondition {
+                        Loop 3 {
+                            ! BADTester.DoSomeLongTask
+                        }
                     }
                 }
             }
         }
+        
     }
+    
+    
 
 
